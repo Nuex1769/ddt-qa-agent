@@ -1,0 +1,18 @@
+# 放入已有 HTTPS server 块；同时将域名加入 ALLOWED_ORIGINS。
+location /api/chat {
+    proxy_pass http://127.0.0.1:8000;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_buffering off;
+    proxy_cache off;
+    gzip off;
+    proxy_read_timeout 300s;
+    add_header X-Accel-Buffering no;
+}
+location / {
+    proxy_pass http://127.0.0.1:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    client_max_body_size 21m;
+}

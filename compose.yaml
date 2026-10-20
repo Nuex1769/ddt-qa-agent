@@ -1,0 +1,36 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ddt
+      POSTGRES_DB: ddt
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ddt-local-only}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ddt -d ddt"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+    restart: unless-stopped
+  app:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://ddt:${POSTGRES_PASSWORD:-ddt-local-only}@db:5432/ddt
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - app-data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health')"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+volumes:
+  postgres-data:
+  app-data:
