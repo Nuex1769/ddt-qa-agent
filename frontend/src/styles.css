@@ -2803,3 +2803,149 @@ textarea {
 .history-item > [data-state='open'] {
   opacity: 1;
 }
+
+/* Observability follows the existing document table and dialog density. */
+.observation-connection {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 22px;
+  margin-bottom: 24px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--radius);
+  color: var(--primary);
+}
+.observation-connection > div {
+  flex: 1;
+  min-width: 0;
+}
+.observation-connection strong {
+  color: var(--text);
+  font-size: 13px;
+}
+.observation-connection p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 6px 0 0;
+}
+.observation-filters {
+  flex-wrap: wrap;
+}
+.observation-id {
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.observation-state {
+  white-space: nowrap;
+}
+.observation-complete,
+.observation-synced {
+  color: var(--success);
+}
+.observation-error,
+.observation-failed {
+  color: var(--danger);
+}
+.observation-interrupted {
+  color: var(--warning);
+}
+.observation-dialog {
+  width: min(760px, calc(100vw - 32px));
+}
+.observation-dialog .dialog-header p {
+  overflow-wrap: anywhere;
+}
+.observation-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 0 0 24px;
+}
+.observation-facts > div {
+  min-width: 0;
+}
+.observation-facts dt {
+  color: var(--muted);
+  font-size: 11px;
+}
+.observation-facts dd {
+  margin: 5px 0 0;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+.observation-detail-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.observation-timeline-title {
+  font-size: 14px;
+  margin: 24px 0 12px;
+}
+.observation-timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.observation-timeline li {
+  padding: 12px;
+  margin-bottom: 8px;
+  border-left: 2px solid var(--primary);
+  background: var(--surface-muted);
+}
+.observation-timeline .observation-child {
+  margin-left: 18px;
+}
+.observation-timeline li > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+.observation-timeline li > div > span:last-child {
+  margin-left: auto;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.observation-timeline p,
+.observation-note {
+  font-size: 12px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.observation-timeline p {
+  margin: 6px 0 0;
+}
+.observation-config {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 14px;
+  font-size: 12px;
+  line-height: 1.8;
+  background: var(--surface-muted);
+  border-radius: var(--radius);
+}
+@media (max-width: 640px) {
+  .observation-connection {
+    flex-wrap: wrap;
+    padding: 16px;
+  }
+  .observation-connection > div {
+    flex-basis: calc(100% - 40px);
+  }
+  .observation-connection > .button {
+    margin-left: 34px;
+  }
+  .observation-filters > .select-trigger {
+    flex: 1;
+    min-width: 130px;
+  }
+  .observation-facts {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}

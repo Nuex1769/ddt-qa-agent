@@ -13,6 +13,9 @@ import './styles.css'
 const Chat = lazy(() => import('@/pages/Chat').then((m) => ({ default: m.Chat })))
 const Documents = lazy(() => import('@/pages/Documents').then((m) => ({ default: m.Documents })))
 const Settings = lazy(() => import('@/pages/Settings').then((m) => ({ default: m.Settings })))
+const Observability = lazy(() =>
+  import('@/pages/Observability').then((m) => ({ default: m.Observability })),
+)
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false }
@@ -56,6 +59,10 @@ function App() {
           <Route path="/chat/:conversationId" element={<Chat />} />
           <Route path="/documents" element={<Documents />} />
           <Route path="/settings" element={<Settings />} />
+          <Route
+            path="/observability"
+            element={user.role === 'admin' ? <Observability /> : <Navigate to="/chat" replace />}
+          />
           <Route path="*" element={<Navigate to="/chat" replace />} />
         </Route>
       </Routes>

@@ -51,6 +51,12 @@ DeepSeek 官方使用 `https://api.deepseek.com/chat/completions`、模型 ID `d
 
 文档中的提示词可能不可信，系统指令会声明仅把参考资料视为数据。界面不执行原文 HTML，不自动加载 Markdown 中的远程图片，避免资料内容引起外部资源请求。但当前版本没有独立提示词注入检测、DLP 或人工审批系统。
 
+## 观测记录与 Langfuse
+
+`observations` 保存问答、审查的无正文运行记录；管理员接口位于 `/api/observability`。使用 ContextVar 隔离并发请求的 trace/span，在检索、模型生成、审查及向量调用处采集耗时和模型返回用量。调用完成、失败或取消后保存状态，生成器在原上下文中显式关闭以保证 span 正确结束。
+
+可选 Langfuse 同步使用持久状态、退避重试、原子领取租约及 OTLP/HTTP JSON 后台上报，与主业务流分离。详情跳转、上报范围和部署配置见 [Langfuse 说明](langfuse.md)。
+
 ## 文档审查、草稿和版本
 
 `documents` 和 `chunks` 始终保存当前已发布内容。新增 `document_reviews`、`review_turns` 和 `document_versions` 表保存独立审查记录、草稿、发布快照和采用建议的来源，不在检索查询中混入草稿。现有数据库通过新增表和当前版本快照回填升级，不删除已有资料。

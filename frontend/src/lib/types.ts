@@ -102,3 +102,43 @@ export interface DocumentVersion {
   adopted_ids?: string[]
   diff?: { kind: 'equal' | 'insert' | 'delete' | 'replace'; old: string; new: string }[]
 }
+
+export interface Observation {
+  id: string
+  operation: 'chat' | 'review'
+  user_id: string
+  session_id: string
+  mode: 'demo' | 'production'
+  model: string
+  status: 'complete' | 'error' | 'interrupted'
+  started_at: string
+  ended_at: string
+  duration_ms: number
+  input_tokens: number | null
+  output_tokens: number | null
+  export_status: 'disabled' | 'pending' | 'sending' | 'synced' | 'failed'
+  export_attempts: number
+  export_error: string
+  exported_at: string
+  langfuse_url: string
+  spans?: {
+    id: string
+    parent_id: string
+    name: string
+    kind: string
+    model?: string
+    status: string
+    duration_ms: number
+    input_tokens: number | null
+    output_tokens: number | null
+    error_type?: string
+  }[]
+  details?: Record<string, number | string>
+}
+export interface ObservabilityConfig {
+  enabled: boolean
+  configured: boolean
+  base_url: string
+  project_link_configured: boolean
+  content_capture: boolean
+}

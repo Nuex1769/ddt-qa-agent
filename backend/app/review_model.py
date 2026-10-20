@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from .config import settings
 from .db import Document, User, uid
+from .observability import model_usage, observed, span
 from .rag import bm25, retrieve, tokenize
 
 PART_SIZE = 12_000
@@ -50,6 +51,7 @@ async def related_sources(db: Session, user: User, doc: Document, part: str) -> 
     return output
 
 
+@observed("review-analysis")
 async def analyze_part(
     doc: Document, part: str, question: str, sources: list[dict], history: list[dict], part_index: int
 ) -> ReviewResult:
@@ -139,43 +141,46 @@ async def analyze_part(
     ]
     async with httpx.AsyncClient(timeout=httpx.Timeout(150, connect=15)) as client:
         for attempt in range(2):
-            response = await client.post(
-                f"{settings.model_base_url.rstrip('/')}/chat/completions",
-                headers={"Authorization": f"Bearer {settings.model_api_key}"},
-                json={
-                    "model": settings.chat_model,
-                    "messages": messages,
-                    "stream": False,
-                    "response_format": {"type": "json_object"},
-                    "max_tokens": 6000,
-                    **settings.thinking_options,
-                },
-            )
-            response.raise_for_status()
-            payload = response.json()
-            choices = payload.get("choices", [])
-            if not choices or choices[0].get("finish_reason") != "stop":
-                raise ValueError("审查结果不完整，请缩小审查重点后重试")
-            content = choices[0].get("message", {}).get("content", "")
-            # Some compatible services add a fence despite requesting JSON.
-            content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content.strip())
-            try:
-                return ReviewResult.model_validate(json.loads(content))
-            except ValidationError as exc:
-                # Repair missing advice once; never publish a problem-only result as complete.
-                missing_advice = any(error["loc"][-1:] == ("suggestion",) for error in exc.errors())
-                if attempt or not missing_advice:
-                    raise
-                messages.extend(
-                    [
-                        {"role": "assistant", "content": content},
-                        {
-                            "role": "user",
-                            "content": "上次结果有问题缺少处理建议。请保留已发现的问题，为每项补齐非空的suggestion，"
-                            "给出针对该问题的具体修改方法或核实步骤，不能编造业务事实。重新返回完整JSON对象。",
-                        },
-                    ]
+            with span("review-model", "generation"):
+                model_usage({}, settings.chat_model)
+                response = await client.post(
+                    f"{settings.model_base_url.rstrip('/')}/chat/completions",
+                    headers={"Authorization": f"Bearer {settings.model_api_key}"},
+                    json={
+                        "model": settings.chat_model,
+                        "messages": messages,
+                        "stream": False,
+                        "response_format": {"type": "json_object"},
+                        "max_tokens": 6000,
+                        **settings.thinking_options,
+                    },
                 )
+                response.raise_for_status()
+                payload = response.json()
+                model_usage(payload, settings.chat_model)
+                choices = payload.get("choices", [])
+                if not choices or choices[0].get("finish_reason") != "stop":
+                    raise ValueError("审查结果不完整，请缩小审查重点后重试")
+                content = choices[0].get("message", {}).get("content", "")
+                # Some compatible services add a fence despite requesting JSON.
+                content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content.strip())
+                try:
+                    return ReviewResult.model_validate(json.loads(content))
+                except ValidationError as exc:
+                    # Repair missing advice once; never publish a problem-only result as complete.
+                    missing_advice = any(error["loc"][-1:] == ("suggestion",) for error in exc.errors())
+                    if attempt or not missing_advice:
+                        raise
+                    messages.extend(
+                        [
+                            {"role": "assistant", "content": content},
+                            {
+                                "role": "user",
+                                "content": "上次结果有问题缺少处理建议。请保留已发现的问题，为每项补齐非空的suggestion，"
+                                "给出针对该问题的具体修改方法或核实步骤，不能编造业务事实。重新返回完整JSON对象。",
+                            },
+                        ]
+                    )
     raise ValueError("审查结果缺少处理建议，请重试")
 
 

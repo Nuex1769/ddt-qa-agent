@@ -11,6 +11,10 @@ os.environ["CHAT_THINKING"] = "auto"
 os.environ["EMBEDDING_BASE_URL"] = ""
 os.environ["EMBEDDING_API_KEY"] = ""
 os.environ["SESSION_SECRET"] = "isolated-tests-only-not-a-production-key"
+os.environ["LANGFUSE_ENABLED"] = "false"
+os.environ["LANGFUSE_PUBLIC_KEY"] = ""
+os.environ["LANGFUSE_SECRET_KEY"] = ""
+os.environ["LANGFUSE_PROJECT_ID"] = ""
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402

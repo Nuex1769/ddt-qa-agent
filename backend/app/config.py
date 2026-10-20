@@ -31,6 +31,11 @@ class Settings(BaseSettings):
     embedding_dimensions: int = 1536
     top_k: int = 5
     max_upload_mb: int = 20
+    langfuse_enabled: bool = False
+    langfuse_base_url: str = "https://cloud.langfuse.com"
+    langfuse_public_key: str = ""
+    langfuse_secret_key: str = ""
+    langfuse_project_id: str = ""
 
     @model_validator(mode="after")
     def validate_production(self):
@@ -40,6 +45,19 @@ class Settings(BaseSettings):
             raise ValueError("TOP_K 必须为 1–20，MAX_UPLOAD_MB 必须为 1–100")
         if not 1 <= self.embedding_dimensions <= 2000:
             raise ValueError("EMBEDDING_DIMENSIONS 必须为 1–2000")
+        if self.langfuse_enabled:
+            target = urlsplit(self.langfuse_base_url)
+            if (
+                target.scheme not in {"http", "https"}
+                or not target.hostname
+                or target.username
+                or target.password
+                or target.query
+                or target.fragment
+            ):
+                raise ValueError("LANGFUSE_BASE_URL 必须为不含凭证和查询参数的 HTTP(S) 地址")
+            if not self.langfuse_public_key or not self.langfuse_secret_key:
+                raise ValueError("启用 Langfuse 需要配置 LANGFUSE_PUBLIC_KEY 和 LANGFUSE_SECRET_KEY")
         if not self.demo_mode:
             if len(self.session_secret) < 32 or self.session_secret.startswith("local-"):
                 raise ValueError("真实环境必须设置至少 32 位随机 SESSION_SECRET")

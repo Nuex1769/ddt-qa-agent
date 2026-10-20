@@ -149,6 +149,29 @@ class Message(Base):
     created_at: Mapped[str] = mapped_column(String(40), default=now)
 
 
+class Observation(Base):
+    __tablename__ = "observations"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=uid)
+    operation: Mapped[str] = mapped_column(String(20), index=True)
+    user_id: Mapped[str] = mapped_column(String(32), index=True)
+    session_id: Mapped[str] = mapped_column(String(32), default="")
+    mode: Mapped[str] = mapped_column(String(20))
+    model: Mapped[str] = mapped_column(String(200), default="")
+    status: Mapped[str] = mapped_column(String(20), index=True)
+    started_at: Mapped[str] = mapped_column(String(40), index=True)
+    ended_at: Mapped[str] = mapped_column(String(40))
+    duration_ms: Mapped[float] = mapped_column(Float)
+    input_tokens: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    output_tokens: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    details: Mapped[dict] = mapped_column(JSON, default=dict)
+    spans: Mapped[list] = mapped_column(JSON, default=list)
+    export_status: Mapped[str] = mapped_column(String(20), default="disabled", index=True)
+    export_attempts: Mapped[int] = mapped_column(Integer, default=0)
+    export_error: Mapped[str] = mapped_column(String(200), default="")
+    next_export_at: Mapped[float] = mapped_column(Float, default=0)
+    exported_at: Mapped[str] = mapped_column(String(40), default="")
+
+
 ROOT.joinpath("data").mkdir(exist_ok=True)
 engine = create_engine(
     settings.database_url,

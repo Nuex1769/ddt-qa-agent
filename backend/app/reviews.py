@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 
 from .auth import admin_user, current_user
 from .db import Chunk, Document, DocumentReview, DocumentVersion, ReviewTurn, SessionLocal, User, get_db, now
+from .observability import Trace
 from .rag import MAX_TEXT, embedding_profile, model_error, prepare_document, resolve_sources, sse
 from .review_model import PART_SIZE, analyze_part, related_sources, validated_findings
 from .versions import (
@@ -182,6 +183,8 @@ async def review_message(
     turn_id = turn.id
 
     async def events():
+        trace = Trace("review", user.id, review_id)
+        trace.details["total_parts"] = len(parts)
         status = "interrupted"
         try:
             with SessionLocal() as stream_db:
@@ -231,6 +234,7 @@ async def review_message(
             raise
         except Exception as exc:
             status = "error"
+            trace.details["error_type"] = type(exc).__name__
             logger.warning("review_failed type=%s", type(exc).__name__)
             yield sse("error", {"message": "审查未完整完成，已保留完成部分；请重试或继续未完成审查。"})
         finally:
@@ -244,6 +248,8 @@ async def review_message(
                     .values(busy_until=0, updated_at=now())
                 )
                 final_db.commit()
+                trace.details["completed_parts"] = saved.completed_parts if saved else 0
+            trace.finish(status)
         if status == "complete":
             yield sse("done", {"turn_id": turn_id})
 

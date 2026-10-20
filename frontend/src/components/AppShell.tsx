@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
+  Activity,
   BookOpen,
   ChevronRight,
   CircleHelp,
@@ -108,6 +109,12 @@ export function AppShell() {
           <Files size={18} />
           知识文档
         </NavLink>
+        {user?.role === 'admin' && (
+          <NavLink to="/observability">
+            <Activity size={18} />
+            观测记录
+          </NavLink>
+        )}
         <NavLink to="/settings">
           <Settings2 size={18} />
           工作空间设置
@@ -189,9 +196,11 @@ export function AppShell() {
   )
   const section = location.pathname.startsWith('/documents')
     ? '知识文档'
-    : location.pathname.startsWith('/settings')
-      ? '工作空间设置'
-      : '知识问答'
+    : location.pathname.startsWith('/observability')
+      ? '观测记录'
+      : location.pathname.startsWith('/settings')
+        ? '工作空间设置'
+        : '知识问答'
   return (
     <div className="app-shell">
       <aside className="sidebar">{sidebar}</aside>

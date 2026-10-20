@@ -392,12 +392,13 @@ def test_production_review_model_protocol_uses_target_and_permission_filtered_co
         return httpx.Response(
             200,
             json={
+                "usage": {"prompt_tokens": 30, "completion_tokens": 10},
                 "choices": [
                     {
                         "finish_reason": "length" if mode == "truncated" else "stop",
                         "message": {"content": "broken" if mode == "invalid_json" else json.dumps(content)},
                     }
-                ]
+                ],
             },
         )
 
@@ -406,6 +407,9 @@ def test_production_review_model_protocol_uses_target_and_permission_filtered_co
     )
     stream = run_review(admin, review["id"])
     assert requests and requests[0]["thinking"] == {"type": "disabled"}
+    trace = admin.get("/api/observability/traces?operation=review").json()["items"][0]
+    assert trace["input_tokens"] == 30 * len(requests)
+    assert trace["output_tokens"] == 10 * len(requests)
     failed = mode in {"truncated", "invalid_json", "unrepaired_suggestion"}
     assert stream[-1][0] == ("error" if failed else "done")
     saved = admin.get(f"/api/reviews/{review['id']}").json()["turns"][0]

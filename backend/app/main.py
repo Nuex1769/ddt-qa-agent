@@ -3,7 +3,7 @@ import hashlib
 import logging
 import time
 from collections import defaultdict, deque
-from contextlib import asynccontextmanager
+from contextlib import aclosing, asynccontextmanager, suppress
 from typing import Literal
 
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, Response, UploadFile
@@ -27,6 +27,8 @@ from .auth import (
 from .citations import citation_range
 from .config import ROOT, settings
 from .db import Chunk, Conversation, Document, Message, SessionLocal, User, engine, get_db, init_db, now
+from .observability import Trace, export_loop
+from .observability import router as observability_router
 from .rag import (
     answer_stream,
     embedding_profile,
@@ -47,7 +49,13 @@ logger = logging.getLogger("ddt")
 async def lifespan(_app):
     init_db()
     seed()
-    yield
+    exporter = asyncio.create_task(export_loop())
+    try:
+        yield
+    finally:
+        exporter.cancel()
+        with suppress(asyncio.CancelledError):
+            await exporter
 
 
 app = FastAPI(title="DDT QA Agent", version="0.1.0", lifespan=lifespan)
@@ -485,6 +493,7 @@ async def chat(
     db.commit()
 
     async def events():
+        trace = Trace("chat", user.id, conv_id)
         content = ""
         sources = []
         status = "interrupted"
@@ -495,20 +504,23 @@ async def chat(
             async with asyncio.timeout(240):
                 with SessionLocal() as stream_db:
                     sources = await retrieve(stream_db, user, query, body.product, body.version)
+                trace.details["source_count"] = len(sources)
                 yield sse("sources", {"items": sources})
                 yield sse("status", {"message": "正在根据参考资料整理回答…" if sources else "未找到足够资料"})
-                async for delta in answer_stream(body.question, sources, history):
-                    if await request.is_disconnected():
-                        return
-                    content += delta
-                    if len(content) > 40_000:
-                        raise ValueError("回答过长，请缩小问题范围后重试")
-                    yield sse("delta", {"text": delta})
+                async with aclosing(answer_stream(body.question, sources, history)) as answer:
+                    async for delta in answer:
+                        if await request.is_disconnected():
+                            return
+                        content += delta
+                        if len(content) > 40_000:
+                            raise ValueError("回答过长，请缩小问题范围后重试")
+                        yield sse("delta", {"text": delta})
             status = "complete"
         except asyncio.CancelledError:
             raise
         except Exception as exc:
             status = "error"
+            trace.details["error_type"] = type(exc).__name__
             # Never log prompts, document contents, credentials, or upstream response bodies.
             logger.warning("generation_failed type=%s", type(exc).__name__)
             message = "回答未能完整生成，请重试；如持续失败，请管理员检查模型配置。"
@@ -532,6 +544,8 @@ async def chat(
                 )
                 final_db.commit()
                 assistant_id = assistant.id
+            trace.details["output_characters"] = len(content)
+            trace.finish(status)
         if status == "complete":
             yield sse("done", {"message_id": assistant_id, "conversation_id": conv_id})
 
@@ -566,6 +580,7 @@ def create_user(body: CreateUserBody, _user: User = Depends(admin_user), db: Ses
 
 
 app.include_router(review_router)
+app.include_router(observability_router)
 
 # Built assets are served from the same origin in the container deployment.
 DIST = ROOT / "frontend" / "dist"
