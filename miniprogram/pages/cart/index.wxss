@@ -1,0 +1,57 @@
+.coaster-page { min-height: 100vh; padding-bottom: 260rpx; }
+.coaster-brand-bar { background: var(--canvas); }
+.coaster-brand { display: flex; align-items: center; gap: 22rpx; margin: 0 42rpx; border-bottom: 1rpx solid var(--line); }
+.coaster-brand > image { width: 48rpx; height: 48rpx; }
+.coaster-brand-name { font-size: 36rpx; font-weight: 600; letter-spacing: 9rpx; }
+.coaster-brand-en { font-size: 11rpx; letter-spacing: 6rpx; margin-top: 8rpx; }
+.coaster-content { padding: 0 42rpx 32rpx; }
+.coaster-heading { padding: 48rpx 0 60rpx; }
+.coaster-eyebrow { font-size: 13rpx; letter-spacing: 4rpx; color: var(--accent); }
+.coaster-title { font: 62rpx 'Songti SC','STSong',serif; letter-spacing: 6rpx; line-height: 1.5; margin-top: 24rpx; }
+.coaster-subtitle { font: 32rpx 'Songti SC','STSong',serif; letter-spacing: 2rpx; color: #d4d5c5; margin-top: 12rpx; }
+.coaster-intro { color: var(--muted); font-size: 21rpx; margin-top: 18rpx; }
+.coaster-ticket { position: relative; padding: 38rpx 30rpx 0; background: #eee9da; color: #374337; border-radius: 4rpx; }
+.coaster-tape { position: absolute; width: 82rpx; height: 26rpx; left: calc(50% - 41rpx); top: -14rpx; background: #c1bc9f8c; transform: rotate(-5deg); }
+.ticket-heading { display: flex; justify-content: space-between; align-items: center; padding-bottom: 26rpx; border-bottom: 1rpx solid #37433744; font-size: 13rpx; letter-spacing: 3rpx; }
+.ticket-heading text:last-child { font-size: 20rpx; letter-spacing: 2rpx; }
+.coaster-item { padding: 36rpx 0 28rpx; border-bottom: 1rpx dashed #37433755; }
+.coaster-item-row { display: flex; align-items: flex-start; gap: 22rpx; }
+.coaster-photo { flex-shrink: 0; width: 104rpx; height: 128rpx; border-radius: 4rpx; }
+.coaster-drink { min-width: 0; flex: 1; }
+.coaster-drink-label { color: #7b6147; font-size: 10rpx; line-height: 1.5; letter-spacing: 2rpx; }
+.coaster-drink-name { font: 35rpx 'Songti SC','STSong',serif; letter-spacing: 1rpx; margin: 12rpx 0 10rpx; line-height: 1.4; }
+.coaster-drink-name text { color: #67715e; font: 20rpx Georgia,serif; white-space: nowrap; }
+.coaster-drink-note { color: #67715e; font-size: 17rpx; line-height: 1.7; }
+.coaster-drink-meta { color: #67715e; font-size: 17rpx; margin-top: 10rpx; line-height: 1.6; }
+.coaster-item-end { display: flex; flex-direction: column; align-items: flex-end; gap: 18rpx; flex-shrink: 0; }
+.coaster-line-price { font: 42rpx Georgia,serif; }
+.coaster-line-price text { font-size: 22rpx; margin-right: 3rpx; }
+.coaster-item-end button { padding: 8rpx 0; font-size: 20rpx; line-height: 1.4; color: #6b705c; background: transparent; }
+.coaster-stepper { display: flex; align-items: center; justify-content: flex-end; gap: 24rpx; margin-top: 22rpx; }
+.coaster-stepper button { width: 58rpx; height: 58rpx; border: 1rpx solid #46543c55; border-radius: 50%; color: #4e5a46; line-height: 54rpx; font-size: 30rpx; padding: 0; background: transparent; }
+.coaster-stepper text { font: 26rpx Georgia,serif; min-width: 24rpx; text-align: center; }
+.coaster-invalid-note { font-size: 22rpx; color: #8b4a38; line-height: 1.8; margin-top: 18rpx; }
+.coaster-invalid .coaster-photo { opacity: .5; }
+.coaster-total { display: flex; justify-content: space-between; align-items: center; padding: 42rpx 0 38rpx; border-bottom: 1rpx solid #37433744; }
+.coaster-total > view:first-child > view { font: 32rpx 'Songti SC','STSong',serif; }
+.coaster-total > view:first-child > text { display: block; font-size: 17rpx; color: #67715e; margin-top: 14rpx; }
+.coaster-total-price { font: 62rpx Georgia,serif; }
+.coaster-total-price text { font-size: 28rpx; margin-right: 6rpx; }
+.ticket-footer { display: flex; justify-content: space-between; gap: 16rpx; font-size: 14rpx; color: #707461; padding: 24rpx 0 30rpx; }
+.ticket-footer text:last-child { font-size: 12rpx; letter-spacing: 2rpx; }
+.coaster-memory { display: flex; align-items: flex-start; gap: 22rpx; padding-top: 50rpx; }
+.coaster-memory > image { width: 44rpx; height: 44rpx; flex-shrink: 0; margin-top: 6rpx; }
+.coaster-memory > view > view { font: 32rpx 'Songti SC','STSong',serif; letter-spacing: 1rpx; margin-bottom: 14rpx; }
+.coaster-memory text { font-size: 21rpx; color: var(--muted); line-height: 1.9; }
+.coaster-footer { position: fixed; left: 0; right: 0; bottom: 0; padding: 30rpx 42rpx 34rpx; background: #14231ef8; border-top: 1rpx solid var(--line); }
+.coaster-primary { width: 100%; min-height: 90rpx; padding: 24rpx 30rpx; display: flex; justify-content: space-between; align-items: center; border: 0; border-radius: 6rpx; background: var(--accent); color: var(--canvas); font-size: 26rpx; font-weight: 500; line-height: 1.5; }
+.coaster-primary text:last-child { font-size: 30rpx; }
+.coaster-continue { margin: 18rpx auto 0; padding: 8rpx 16rpx; line-height: 1.5; font-size: 21rpx; color: var(--muted); background: transparent; }
+.coaster-local-note { margin-top: 22rpx; color: #9ba995; font-size: 17rpx; letter-spacing: 1rpx; text-align: center; }
+.coaster-empty { text-align: center; padding: 56rpx 0 48rpx; }
+.coaster-rings { width: 172rpx; height: 172rpx; border: 1rpx solid #7c806e55; border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; margin: 0 auto 40rpx; }
+.coaster-rings::before { content: ''; position: absolute; inset: 18rpx; border: 1rpx solid #7c806e33; border-radius: 50%; }
+.coaster-rings image { width: 52rpx; height: 52rpx; opacity: .7; }
+.coaster-empty-title { font: 36rpx 'Songti SC','STSong',serif; letter-spacing: 2rpx; margin-bottom: 20rpx; }
+.coaster-empty-copy { font-size: 21rpx; line-height: 1.9; color: #67715e; }
+.coaster-browse { background: transparent; color: #775239; font-size: 21rpx; line-height: 1.5; margin: 24rpx auto 0; padding: 8rpx 0; }

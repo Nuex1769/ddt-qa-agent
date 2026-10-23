@@ -40,6 +40,7 @@ from .rag import (
 )
 from .reviews import router as review_router
 from .seed import seed
+from .tavern import router as tavern_router
 from .versions import snapshot
 
 logger = logging.getLogger("ddt")
@@ -64,7 +65,7 @@ app.add_middleware(
     allow_origins=settings.origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["Content-Type"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 
@@ -581,6 +582,7 @@ def create_user(body: CreateUserBody, _user: User = Depends(admin_user), db: Ses
 
 app.include_router(review_router)
 app.include_router(observability_router)
+app.include_router(tavern_router)
 
 # Built assets are served from the same origin in the container deployment.
 DIST = ROOT / "frontend" / "dist"

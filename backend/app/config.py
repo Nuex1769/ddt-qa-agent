@@ -24,6 +24,8 @@ class Settings(BaseSettings):
     model_api_key: str = ""
     chat_model: str = ""
     chat_thinking: Literal["auto", "enabled", "disabled"] = "auto"
+    wechat_app_id: str = ""
+    wechat_app_secret: str = ""
     retrieval_mode: Literal["keyword", "hybrid"] = "hybrid"
     embedding_base_url: str = ""
     embedding_api_key: str = ""

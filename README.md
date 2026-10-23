@@ -4,6 +4,8 @@
 
 前端为 React + TypeScript + Vite，后端为 FastAPI，LlamaIndex 负责文字分块。提供可立即运行的本地演示模式，以及兼容模型 API 和 PostgreSQL/pgvector 的接入实现。
 
+已新增酒馆业务第一版：管理员维护酒单与内部配方，原生微信小程序提供需求推荐、购物车、口味偏好和基于已完成订单推测的“老样子”，暂不提交订单或支付。进入后台侧栏「酒单与配方」开始；小程序配置、导入模板与接口见 [酒馆使用指南](docs/tavern.md)。
+
 ## 本地体验
 
 需要 Node.js 22.12+（建议 24 LTS）和 [uv](https://docs.astral.sh/uv/)。Python 支持 3.11–3.14，依赖已锁定。

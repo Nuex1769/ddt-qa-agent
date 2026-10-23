@@ -1,0 +1,47 @@
+<view class="tonight">
+  <view class="brand-bar" style="padding-top: {{statusHeight}}px;">
+    <view class="brand" style="height: {{navHeight}}px;">
+      <view class="record"><view class="record-hole" /></view>
+      <view><view class="brand-name">慢半拍</view><view class="brand-en">SLOW SIDE · BAR</view></view>
+    </view>
+  </view>
+  <view class="onair"><text>● THE NIGHT IS STILL YOUNG</text><text>COCKTAILS &amp; CRAFT</text></view>
+  <view class="hero">
+    <image class="hero-image" src="/assets/bar/cocktail-bar.jpg" mode="aspectFill" />
+    <view class="hero-shade" />
+    <view class="hero-copy"><view class="hero-kicker">GOOD MUSIC. GOOD COMPANY.</view><view class="hero-title"><view>把今晚，</view><view>调成喜欢的样子。</view></view><view class="hero-intro"><view>一杯鸡尾酒，或一口刚打的精酿。</view><view>你说心情，我们来选酒。</view></view></view>
+    <text class="handwritten">take it slow ↗</text>
+    <view class="playing"><text class="tiny-record">◎</text><text>TONIGHT’S MOOD</text><text class="track">Jazz after dark</text><text class="equalizer">ııIıı</text></view>
+  </view>
+  <view id="bartender-note" class="paper">
+    <view class="tape" />
+    <view class="paper-heading"><text>✧ A NOTE FROM YOUR BARTENDER</text><text>为你选酒</text></view>
+    <view class="guest"><text class="guest-label">你</text><text class="guest-text">{{latest ? latest.question : '想喝点清爽的，不要太甜。'}}</text></view>
+    <view class="bartender"><view class="bartender-icon"><image src="/assets/bar/cocktail-ink.png" /></view><view class="bartender-copy"><text class="bartender-label">阿麦 · 你的选酒搭子</text><view class="answer">{{busy ? '正在替你翻翻酒单…' : latest ? latest.answer : welcome}}</view></view></view>
+    <view class="prompts"><button data-message="微甜的无酒精鸡尾酒" bindtap="quick" disabled="{{busy}}">微甜 · 无酒精 ↗</button><button data-message="来杯清爽精酿" bindtap="quick" disabled="{{busy}}">来杯清爽精酿 ↗</button><button data-message="老样子" bindtap="quick" disabled="{{busy}}">老样子 ↗</button></view>
+    <button wx:if="{{latest}}" class="restart" bindtap="newConversation" disabled="{{busy}}">重新聊聊 ↺</button>
+  </view>
+  <view wx:if="{{error}}" class="error">{{error}}<view class="row"><button class="secondary" bindtap="loadMenu" disabled="{{busy}}">刷新酒单</button><button wx:if="{{!mock}}" class="quiet" bindtap="relogin" disabled="{{busy}}">重新登录</button></view></view>
+  <view id="tonight-menu" class="tonight-menu">
+    <view class="menu-heading"><view><view class="menu-kicker">TONIGHT’S GOOD THINGS</view><view class="menu-title">{{usual && hasResult ? '阿麦猜你想喝' : '今晚的心头好'}}</view></view><text class="menu-count">{{count || '00'}} 款</text></view>
+    <view class="filters"><button class="{{filter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="selectFilter">为你选的</button><button class="{{filter === '鸡尾酒' ? 'active' : ''}}" data-filter="鸡尾酒" bindtap="selectFilter"><image class="filter-icon" src="/assets/bar/cocktail-muted.png" />鸡尾酒</button><button class="{{filter === '精酿' ? 'active' : ''}}" data-filter="精酿" bindtap="selectFilter"><image class="filter-icon" src="/assets/bar/beer-muted.png" />精酿</button><button class="menu-link" bindtap="openCart">杯垫 ↗</button></view>
+    <view wx:if="{{loading}}" class="empty">正在打开酒单…</view>
+    <view wx:elif="{{!visible.length && !error}}" class="empty">这份酒单暂时没有符合条件的酒。<view>换个口味，或和阿麦重新聊聊。</view></view>
+    <view wx:for="{{visible}}" wx:key="id" class="menu-drink">
+      <button class="drink-open" data-id="{{item.id}}" bindtap="openDrink" aria-label="查看{{item.name}}">
+        <view class="drink-photo"><image src="{{item.photo}}" mode="aspectFill" /><text>{{item.number}}</text></view>
+        <view class="drink-info"><view class="drink-label">{{item.label}}</view><view class="drink-title">{{item.name}}</view><view class="drink-note">{{item.description}}</view><view class="drink-meta">{{item.volume}} · {{item.abv}}% vol<text wx:if="{{usual && hasResult && filter === 'all'}}"> · {{item.quantity}} 杯</text></view></view>
+      </button>
+      <view class="drink-action"><view class="drink-price"><text>¥</text>{{item.price}}</view><button wx:if="{{!(usual && hasResult && filter === 'all')}}" class="add-button" aria-label="把{{item.name}}加入杯垫" data-id="{{item.id}}" data-quantity="1" bindtap="add" disabled="{{busy}}">＋</button></view>
+    </view>
+    <view wx:if="{{mock && usual && hasResult}}" class="mock-label">本次根据虚构演示订单推测，不代表真实消费。</view>
+    <button wx:if="{{usual && hasResult && recommendations.length && filter === 'all'}}" class="primary full" bindtap="addUsual" disabled="{{busy}}">确认老样子，加入我的杯垫</button>
+    <view class="menu-end"><text>好酒不赶场，今晚慢慢来。</text><text>DRINK SLOW, FEEL MORE.</text></view>
+    <view wx:if="{{mock}}" class="mock-label">风格体验 · 虚构酒单与订单 · 暂不下单</view>
+    <view wx:elif="{{demo}}" class="mock-label">演示推荐 · 关键词匹配 · 暂不下单</view>
+  </view>
+  <view class="composer-wrap"><view class="composer"><image class="chat-symbol" src="/assets/bar/chat-accent.png" /><input value="{{input}}" bindinput="onInput" bindconfirm="ask" confirm-type="send" maxlength="1000" placeholder="把今晚的心情，交给调酒师…" placeholder-class="composer-placeholder" aria-label="告诉调酒师你的口味" disabled="{{busy}}" /><button bindtap="ask" aria-label="发送口味需求" disabled="{{busy}}">↑</button></view></view>
+  <view wx:if="{{selected}}" class="sheet-mask" bindtap="closeDrink">
+    <view class="drink-sheet" catchtap="noop"><view class="sheet-top"><text>这一杯，慢慢了解</text><button bindtap="closeDrink" aria-label="关闭酒款详情">×</button></view><image class="sheet-image" src="{{selected.photo}}" mode="aspectFill" /><view class="sheet-title">{{selected.name}}<text>¥{{selected.price}}</text></view><view class="muted">{{selected.description}} · {{selected.abv}}% vol</view><view class="sheet-ingredients">{{selected.ingredients_text}}</view><view class="muted">{{selected.allergens_text}}</view><button class="primary full" data-id="{{selected.id}}" data-quantity="1" bindtap="add" disabled="{{busy}}">加入我的杯垫 · ¥{{selected.price}}</button></view>
+  </view>
+</view>

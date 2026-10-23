@@ -1,0 +1,16 @@
+<view class="page">
+  <view class="eyebrow">MAKE IT YOURS</view><view class="title">每一杯，更懂你。</view>
+  <view class="subtitle">你主动保存的偏好会用于筛选酒单和推荐结果。</view>
+  <view wx:if="{{error}}" class="error">{{error}}<view class="row"><button class="secondary" bindtap="load" disabled="{{busy}}">刷新偏好</button><button class="quiet" bindtap="relogin" disabled="{{busy}}">重新登录</button></view></view>
+  <view wx:if="{{loading}}" class="empty">正在读取你的口味…</view>
+  <view class="panel">
+    <view class="row"><view>只看无酒精酒款</view><switch checked="{{zeroAlcohol}}" bindchange="toggle" color="#eaa469" disabled="{{busy || loading}}" aria-label="只看无酒精酒款" /></view>
+    <view class="field-label">忌口与过敏原</view><input class="input" value="{{avoid}}" bindinput="input" placeholder="例如：牛奶，坚果，薄荷" maxlength="840" disabled="{{busy || loading}}" />
+    <view class="muted hint">用逗号分隔。设置后会过滤包含这些原料或已标注过敏原的酒款。</view>
+    <button class="primary full" bindtap="save" disabled="{{busy || loading}}" loading="{{busy}}">保存我的口味</button>
+  </view>
+  <view class="section-title">阿麦眼中的老样子</view>
+  <view class="muted">根据近期已完成订单的常点酒款和杯数推测，不需要手动保存。口味不明确时，阿麦会再问一句。</view>
+  <view class="notice">近期可参考的已完成订单：{{historyCount}} 笔。杯垫里的待选酒款不计入历史；本地 mock 使用虚构订单。</view>
+  <view class="notice">无酒精以门店标注的 0% 为准；甜度不代表糖含量。如有严重过敏，请与店员确认制作环境。</view>
+</view>

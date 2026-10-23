@@ -14,6 +14,7 @@ import {
   Settings2,
   ShieldCheck,
   Trash2,
+  Wine,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from './ui/button'
@@ -110,6 +111,12 @@ export function AppShell() {
           知识文档
         </NavLink>
         {user?.role === 'admin' && (
+          <NavLink to="/tavern">
+            <Wine size={18} />
+            酒单与配方
+          </NavLink>
+        )}
+        {user?.role === 'admin' && (
           <NavLink to="/observability">
             <Activity size={18} />
             观测记录
@@ -194,13 +201,15 @@ export function AppShell() {
       </div>
     </>
   )
-  const section = location.pathname.startsWith('/documents')
-    ? '知识文档'
-    : location.pathname.startsWith('/observability')
-      ? '观测记录'
-      : location.pathname.startsWith('/settings')
-        ? '工作空间设置'
-        : '知识问答'
+  const section = location.pathname.startsWith('/tavern')
+    ? '酒单与配方'
+    : location.pathname.startsWith('/documents')
+      ? '知识文档'
+      : location.pathname.startsWith('/observability')
+        ? '观测记录'
+        : location.pathname.startsWith('/settings')
+          ? '工作空间设置'
+          : '知识问答'
   return (
     <div className="app-shell">
       <aside className="sidebar">{sidebar}</aside>

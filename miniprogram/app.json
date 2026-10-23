@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/discover/index",
+    "pages/cart/index",
+    "pages/profile/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "慢半拍 · 今晚",
+    "navigationBarBackgroundColor": "#14231e",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#14231e"
+  },
+  "tabBar": {
+    "color": "#b3b9aa",
+    "selectedColor": "#eaa469",
+    "backgroundColor": "#14231e",
+    "list": [
+      {
+        "pagePath": "pages/discover/index",
+        "text": "今晚",
+        "iconPath": "assets/bar/record-muted.png",
+        "selectedIconPath": "assets/bar/record-accent.png"
+      },
+      {
+        "pagePath": "pages/cart/index",
+        "text": "我的杯垫",
+        "iconPath": "assets/bar/coaster-muted.png",
+        "selectedIconPath": "assets/bar/coaster-accent.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的口味",
+        "iconPath": "assets/bar/user-muted.png",
+        "selectedIconPath": "assets/bar/user-accent.png"
+      }
+    ],
+    "borderStyle": "black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

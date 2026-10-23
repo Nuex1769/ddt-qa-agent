@@ -1,6 +1,6 @@
 import { Component, StrictMode, Suspense, lazy, type ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { LoaderCircle } from 'lucide-react'
 import { Toaster } from 'sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
@@ -13,6 +13,11 @@ import './styles.css'
 const Chat = lazy(() => import('@/pages/Chat').then((m) => ({ default: m.Chat })))
 const Documents = lazy(() => import('@/pages/Documents').then((m) => ({ default: m.Documents })))
 const Settings = lazy(() => import('@/pages/Settings').then((m) => ({ default: m.Settings })))
+const Tavern = lazy(() => import('@/pages/Tavern').then((m) => ({ default: m.Tavern })))
+const BarConcepts = lazy(() =>
+  import('@/pages/BarConcepts').then((m) => ({ default: m.BarConcepts })),
+)
+const BarHome = lazy(() => import('@/pages/BarConcepts').then((m) => ({ default: m.BarHome })))
 const Observability = lazy(() =>
   import('@/pages/Observability').then((m) => ({ default: m.Observability })),
 )
@@ -36,6 +41,19 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean
 }
 function App() {
   const { user, loading } = useAuth()
+  const location = useLocation()
+  if (location.pathname === '/bar')
+    return (
+      <Suspense fallback={<div className="loading fullscreen">正在推开酒馆的门…</div>}>
+        <BarHome />
+      </Suspense>
+    )
+  if (location.pathname === '/bar-concepts')
+    return (
+      <Suspense fallback={<div className="loading fullscreen">正在打开酒馆设计稿…</div>}>
+        <BarConcepts />
+      </Suspense>
+    )
   if (loading)
     return (
       <div className="loading fullscreen">
@@ -59,6 +77,10 @@ function App() {
           <Route path="/chat/:conversationId" element={<Chat />} />
           <Route path="/documents" element={<Documents />} />
           <Route path="/settings" element={<Settings />} />
+          <Route
+            path="/tavern"
+            element={user.role === 'admin' ? <Tavern /> : <Navigate to="/chat" replace />}
+          />
           <Route
             path="/observability"
             element={user.role === 'admin' ? <Observability /> : <Navigate to="/chat" replace />}

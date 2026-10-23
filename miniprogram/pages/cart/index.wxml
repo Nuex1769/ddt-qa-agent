@@ -1,0 +1,22 @@
+<view class="coaster-page">
+  <view class="coaster-brand-bar" style="padding-top: {{statusHeight}}px;"><view class="coaster-brand" style="height: {{navHeight}}px;"><image src="/assets/bar/record-muted.png" /><view><view class="coaster-brand-name">慢半拍</view><view class="coaster-brand-en">SLOW SIDE · BAR</view></view></view></view>
+  <view class="coaster-content">
+    <view class="coaster-heading"><view class="coaster-eyebrow">YOUR LITTLE COASTER</view><view class="coaster-title">我的杯垫</view><view class="coaster-subtitle">今晚的酒，先放这里。</view><view class="coaster-intro">把喜欢的先留下，今晚慢慢选。</view></view>
+    <view wx:if="{{error}}" class="error">{{error}}<view class="row"><button class="secondary" bindtap="load" disabled="{{busy}}">刷新杯垫</button><button wx:if="{{!mock}}" class="quiet" bindtap="relogin" disabled="{{busy}}">重新登录</button></view></view>
+    <view class="coaster-ticket">
+      <view class="coaster-tape" />
+      <view class="ticket-heading"><text>ON YOUR COASTER</text><text>{{countText}} 杯</text></view>
+      <view wx:if="{{loading}}" class="coaster-empty"><view class="coaster-rings"><image src="/assets/bar/record-ink.png" /></view><view class="coaster-empty-title">正在铺好你的杯垫…</view></view>
+      <view wx:elif="{{!items.length && !error}}" class="coaster-empty"><view class="coaster-rings"><image src="/assets/bar/record-ink.png" /></view><view class="coaster-empty-title">杯垫还空着，今晚还长。</view><view class="coaster-empty-copy">还没有选中的酒。在酒单上点一下「＋」，<view>先把喜欢的留下。</view></view><button class="coaster-browse" bindtap="browse">翻翻今晚的酒单 ↗</button></view>
+      <view wx:for="{{items}}" wx:key="drink_id" class="coaster-item {{!item.valid ? 'coaster-invalid' : ''}}">
+        <view class="coaster-item-row"><image class="coaster-photo" src="{{item.photo}}" mode="aspectFill" /><view class="coaster-drink"><view class="coaster-drink-label">{{item.label}}</view><view class="coaster-drink-name">{{item.drink ? item.drink.name : '已移除的酒款'}} <text>× {{item.quantity}}</text></view><view wx:if="{{item.valid}}" class="coaster-drink-note">{{item.drink.description}}</view><view wx:if="{{item.drink}}" class="coaster-drink-meta">{{item.drink.alcohol_text}} · ¥{{item.drink.price}} / 杯</view></view><view class="coaster-item-end"><view class="coaster-line-price"><text>¥</text>{{item.lineTotal}}</view><button bindtap="remove" data-id="{{item.drink_id}}" disabled="{{busy || loading}}" aria-label="移除{{item.drink ? item.drink.name : '失效酒款'}}">移除</button></view></view>
+        <view wx:if="{{!item.valid}}" class="coaster-invalid-note">酒款已下架或不符合当前口味，不计入小计。请先移除。</view>
+        <view class="coaster-stepper"><button aria-label="减少数量" data-id="{{item.drink_id}}" data-delta="-1" bindtap="change" disabled="{{busy || loading || !item.valid}}">−</button><text>{{item.quantity}}</text><button aria-label="增加数量" data-id="{{item.drink_id}}" data-delta="1" bindtap="change" disabled="{{busy || loading || !item.valid || item.quantity >= 20}}">＋</button></view>
+      </view>
+      <view wx:if="{{items.length}}" class="coaster-total"><view><view>今晚的小计</view><text>{{count}} 杯 · 先选好，再慢慢聊</text></view><view class="coaster-total-price"><text>¥</text>{{total}}</view></view>
+      <view class="ticket-footer"><text>好酒不赶场，今晚慢慢来。</text><text>TAKE IT SLOW.</text></view>
+    </view>
+    <view wx:if="{{items.length}}" class="coaster-memory"><image src="/assets/bar/record-accent.png" /><view><view>下次来，一句「老样子」。</view><text>阿麦会参考已完成订单，推测你常喝的那一杯。</text></view></view>
+  </view>
+  <view class="coaster-footer"><button class="coaster-primary" bindtap="browse" disabled="{{loading}}"><text>{{items.length ? '继续选一杯' : '去选今晚的第一杯'}}</text><text>↗</text></button><view class="coaster-local-note">{{mock ? '演示选择保存在当前设备 · 暂不下单' : '按当前酒单计价 · 暂不下单'}}</view></view>
+</view>

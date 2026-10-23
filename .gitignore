@@ -15,9 +15,13 @@ __pycache__/
 node_modules/
 dist/
 data/
+!miniprogram/data/
+miniprogram/data/*
+!miniprogram/data/demo-orders.json
 artifacts/
 test-results/
 playwright-report/
 *.egg-info/
 *.tsbuildinfo
 .DS_Store
+miniprogram/project.private.config.json

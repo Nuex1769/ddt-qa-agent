@@ -1,0 +1,56 @@
+{
+  "drinks": [
+    {
+      "name": "青柠晚风（演示）",
+      "description": "青柠的清爽与薄荷香气，轻盈微甜。虚构演示酒款。",
+      "category": "鸡尾酒",
+      "price_fen": 3800,
+      "alcohol_percent": 0,
+      "sweetness": 1,
+      "tags": ["清爽", "柑橘", "微甜"],
+      "ingredients": ["青柠", "薄荷", "苏打水", "糖浆"],
+      "allergens": [],
+      "private_recipe": "虚构示例：青柠汁 20ml，糖浆 5ml，苏打水 120ml，薄荷适量。实际售卖前由店员确认配方及原料酒精含量。",
+      "available": true
+    },
+    {
+      "name": "莓果气泡（演示）",
+      "description": "草莓与气泡水，酸甜明快。虚构演示酒款。",
+      "category": "鸡尾酒",
+      "price_fen": 4200,
+      "alcohol_percent": 0,
+      "sweetness": 2,
+      "tags": ["果香", "莓果", "气泡"],
+      "ingredients": ["草莓", "柠檬", "苏打水", "糖浆"],
+      "allergens": [],
+      "private_recipe": "虚构示例，仅用于开发验收。",
+      "available": true
+    },
+    {
+      "name": "杏仁云朵（演示）",
+      "description": "柔和奶香与杏仁香。虚构演示酒款。",
+      "category": "鸡尾酒",
+      "price_fen": 4600,
+      "alcohol_percent": 0,
+      "sweetness": 3,
+      "tags": ["奶香", "甜口"],
+      "ingredients": ["牛奶", "杏仁糖浆", "冰"],
+      "allergens": ["乳制品", "坚果"],
+      "private_recipe": "虚构示例，仅用于开发验收。",
+      "available": true
+    },
+    {
+      "name": "经典金汤力（演示）",
+      "description": "杜松与柑橘，清爽微苦。虚构演示酒款。",
+      "category": "鸡尾酒",
+      "price_fen": 5800,
+      "alcohol_percent": 10,
+      "sweetness": 1,
+      "tags": ["清爽", "柑橘", "微苦"],
+      "ingredients": ["金酒", "汤力水", "青柠"],
+      "allergens": [],
+      "private_recipe": "虚构示例，仅用于开发验收。",
+      "available": true
+    }
+  ]
+}

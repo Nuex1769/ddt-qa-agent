@@ -32,6 +32,8 @@
   --diff-add: #eaf6f0;
   --diff-remove: #fbeef0;
   --diff-add-text: #24694e;
+  --tavern-accent: #763c43;
+  --tavern-soft: #f8f0ed;
 }
 * {
   box-sizing: border-box;
@@ -2947,5 +2949,85 @@ textarea {
   .observation-facts {
     grid-template-columns: 1fr;
     gap: 14px;
+  }
+}
+
+.tavern-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  border-left: 3px solid var(--tavern-accent);
+  background: var(--tavern-soft);
+  color: var(--tavern-accent);
+}
+.tavern-note p {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text);
+}
+.tavern-toolbar,
+.tavern-toolbar > div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.tavern-toolbar {
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.tavern-search {
+  position: relative;
+  flex: 1;
+  max-width: 320px;
+}
+.tavern-search svg {
+  position: absolute;
+  left: 12px;
+  color: var(--muted);
+}
+.tavern-search input {
+  padding-left: 36px;
+}
+.tavern-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.tavern-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+}
+.tavern-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.tavern-fields .select-trigger {
+  width: 100%;
+}
+.tavern-recipe {
+  min-height: 110px;
+  resize: vertical;
+  padding: 10px 12px;
+}
+.tavern-form .muted {
+  margin-bottom: 0;
+}
+.tavern-page td {
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 560px) {
+  .tavern-fields {
+    grid-template-columns: 1fr;
+  }
+  .tavern-search {
+    max-width: none;
+    flex-basis: 100%;
   }
 }

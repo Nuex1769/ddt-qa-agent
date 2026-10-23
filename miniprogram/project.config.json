@@ -1,0 +1,8 @@
+{
+  "description": "酒馆小程序：需求推荐、购物车与老样子",
+  "miniprogramRoot": "./",
+  "compileType": "miniprogram",
+  "appid": "touristappid",
+  "projectname": "tavern-assistant",
+  "setting": { "es6": true, "enhance": true, "minified": true, "urlCheck": true }
+}

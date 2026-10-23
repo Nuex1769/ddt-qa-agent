@@ -1,0 +1,35 @@
+page {
+  --canvas: #14231e; --surface: #1c2e26; --ink: #eee9dc; --muted: #b3b9aa;
+  --accent: #eaa469; --line: #ffffff26; --soft: #263b30; --danger: #ffb4a2;
+  background: var(--canvas); color: var(--ink); font-size: 28rpx;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+}
+view, textarea, input, button { box-sizing: border-box; }
+button { border-radius: 8rpx; font-size: 26rpx; padding: 0 24rpx; margin: 0; line-height: 2.7; }
+button::after { border: 0; }
+button[disabled] { opacity: .45; }
+.primary { background: var(--accent); color: var(--canvas); }
+.secondary { background: var(--surface); color: var(--accent); border: 1rpx solid var(--line); }
+.quiet { background: transparent; color: var(--accent); padding: 0 16rpx; }
+.danger { color: var(--danger); }
+.page { padding: 36rpx 32rpx 56rpx; }
+.eyebrow { color: var(--accent); font-size: 20rpx; letter-spacing: 5rpx; margin-bottom: 16rpx; }
+.title { font-size: 52rpx; font-weight: 600; letter-spacing: 1rpx; line-height: 1.4; }
+.subtitle, .muted { font-size: 24rpx; line-height: 1.8; color: var(--muted); }
+.subtitle { margin: 16rpx 0 28rpx; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 16rpx; }
+.stack { display: flex; flex-direction: column; gap: 20rpx; }
+.panel { border: 1rpx solid var(--line); background: var(--surface); padding: 28rpx; margin: 24rpx 0; border-radius: 8rpx; }
+.section-title { font-size: 32rpx; font-weight: 600; margin: 36rpx 0 20rpx; }
+.notice { color: var(--accent); background: var(--soft); padding: 20rpx 24rpx; font-size: 24rpx; line-height: 1.8; margin: 24rpx 0; border-radius: 6rpx; }
+.error { color: var(--danger); background: var(--surface); border: 1rpx solid var(--danger); padding: 24rpx; margin: 24rpx 0; font-size: 26rpx; line-height: 1.7; }
+.error button { margin-top: 16rpx; }
+.empty { text-align: center; padding: 56rpx 24rpx; color: var(--muted); line-height: 1.9; }
+.drink { padding: 28rpx 0; border-bottom: 1rpx solid var(--line); }
+.drink-name { font-size: 32rpx; font-weight: 600; margin-bottom: 12rpx; }
+.price { color: var(--accent); font-weight: 600; font-size: 32rpx; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tags { display: flex; flex-wrap: wrap; gap: 10rpx; margin: 16rpx 0; }
+.tag { background: var(--soft); color: var(--accent); font-size: 22rpx; padding: 6rpx 12rpx; border-radius: 4rpx; }
+.input { background: var(--surface); border: 1rpx solid var(--line); border-radius: 6rpx; padding: 20rpx; width: 100%; font-size: 28rpx; }
+.field-label { margin: 28rpx 0 14rpx; font-weight: 500; }
+.full { width: 100%; margin-top: 24rpx; }

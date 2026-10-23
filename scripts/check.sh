@@ -9,4 +9,6 @@ cd "$DDT_ROOT/frontend"
 npm run format:check
 node "$DDT_ROOT/scripts/audit-frontend.mjs" "$DDT_ROOT/frontend"
 npm run build
+node "$DDT_ROOT/scripts/check-miniprogram.cjs"
+node --test "$DDT_ROOT/scripts/test-miniprogram-mock.cjs"
 echo '浏览器验收：启动前后端后，在 frontend 目录运行 npm run test:e2e'
