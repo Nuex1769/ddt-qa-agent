@@ -17,7 +17,7 @@ const Tavern = lazy(() => import('@/pages/Tavern').then((m) => ({ default: m.Tav
 const BarConcepts = lazy(() =>
   import('@/pages/BarConcepts').then((m) => ({ default: m.BarConcepts })),
 )
-const BarHome = lazy(() => import('@/pages/BarConcepts').then((m) => ({ default: m.BarHome })))
+const BarHome = lazy(() => import('@/pages/BarHome').then((m) => ({ default: m.BarHome })))
 const Observability = lazy(() =>
   import('@/pages/Observability').then((m) => ({ default: m.Observability })),
 )
