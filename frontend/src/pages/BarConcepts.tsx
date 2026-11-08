@@ -865,14 +865,6 @@ function Phone({ style, experience = false }: { style: Style; experience?: boole
   )
 }
 
-export function BarHome() {
-  return (
-    <main className="bar-concepts bc-single bc-experience">
-      <Phone style="vinyl" experience />
-    </main>
-  )
-}
-
 export function BarConcepts() {
   const params = new URLSearchParams(window.location.search)
   const picked = params.get('style')

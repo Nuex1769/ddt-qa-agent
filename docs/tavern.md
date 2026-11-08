@@ -4,7 +4,7 @@
 
 ## 使用流程
 
-当前小程序默认以所选 **01 深夜唱片酒馆** 风格运行本地 mock，无需启动后端。浏览器可先打开 `http://127.0.0.1:5173/bar`，具体见 [主界面设计与 mock 说明](bar-concepts.md)。以下后台联调流程需先把 `miniprogram/config.js` 的 `mockMode` 改为 `false`。
+当前小程序默认以所选 **01 深夜唱片酒馆** 风格运行本地 mock，无需启动后端。浏览器可先打开 `http://127.0.0.1:5173/bar` 看坐在吧台前的三维演示（本机规则，不下单）；平面比较稿仍在 `/bar-concepts`。具体见 [主界面设计与 mock 说明](bar-concepts.md)。以下后台联调流程需先把 `miniprogram/config.js` 的 `mockMode` 改为 `false`。
 
 1. 按 README 启动服务，管理员登录后进入侧栏 **酒单与配方**。
 2. 点击 **下载模板**，用自己的酒单替换示例，再点击 **导入酒单**；也可以逐款新增。模板为 [虚构演示酒单](../examples/tavern-menu.json)，不会自动写入已有数据库。
